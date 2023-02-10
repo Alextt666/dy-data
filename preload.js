@@ -10,11 +10,9 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   // 通信
   // ipcRenderer.send('check-data');
-  // 维护链接列表
-  const URL_List = [
-    "https://v.douyin.com/BPwMmno",
-    "https://www.douyin.com/video/7186494375692602662",
-  ];
-  const temp = JSON.stringify(URL_List);
-  window.localStorage.setItem("Urls", temp);
+  const analyzeBtn = document.querySelector('.analyse-btn');
+  analyzeBtn.addEventListener('click',()=>{
+    const args = window.localStorage.getItem('Urls')
+    ipcRenderer.send('check-data',args);
+  })
 });

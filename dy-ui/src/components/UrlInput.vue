@@ -3,13 +3,12 @@
     <div class="input-wrapper">
       <el-input v-model="input" placeholder="Please input the url " />
     </div>
-
     <el-button style="width: 80px" type="primary" @click="handleAdd"
       >添 加</el-button
     >
   </div>
   <div class="btn-wrapper">
-    <button class="update-btn">更 新</button>
+    <button class="update-btn" @click="handleUpdate">更 新</button>
     <button class="analyse-btn">分 析</button>
   </div>
   <div class="ul-wrapper">
@@ -27,9 +26,17 @@
 </template>
 <script setup>
 import { ElMessage } from "element-plus";
-import { ref, reactive } from "vue";
-const input = ref("");
-const inputArr = reactive([]);
+import { ref, reactive, onMounted } from "vue";
+let input = ref("");
+let inputArr = reactive([]);
+let localArr = window.localStorage.getItem("Urls");
+onMounted(() => {
+  if (localArr) {
+    localArr = JSON.parse(localArr);
+    localArr.map((item) => inputArr.push(item));
+  }
+});
+
 // 正则匹配
 function validate(str) {
   let regRex =
@@ -66,11 +73,42 @@ function handleAdd() {
 }
 // 关闭按钮
 function handleClose(index) {
-  this.inputArr.splice(index, 1);
+  inputArr.splice(index, 1);
   ElMessage({
     type: "success",
     message: "已删除此条记录",
   });
+}
+// 是否更新列表
+function isUpdated() {
+  if (inputArr.length != localArr.length) {
+    return true;
+  }
+  for (let i = 0; i < inputArr.length; i++) {
+    if (inputArr[i] != localArr[i]) {
+
+      return true;
+    }
+  }
+  return false;
+}
+// 更新
+function handleUpdate() {
+  if (isUpdated()) {
+    const temp = JSON.stringify(inputArr);
+    window.localStorage.setItem("Urls", temp);
+    localArr = JSON.parse(window.localStorage.getItem('Urls'));
+    ElMessage({
+      type: "success",
+      message: "列表更新成功!",
+    });
+    return;
+  }else{
+    ElMessage({
+      type: "warning",
+      message: "列表未更新",
+    });
+  }
 }
 </script>
 
@@ -116,26 +154,31 @@ li {
   border: none;
   border-radius: 10px;
   color: white;
-  background: #24C6DC;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right,#24C6DC, #514A9D);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #24C6DC, #514A9D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-cursor: pointer;
-
-
+  background: #24c6dc; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #24c6dc,
+    #514a9d
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #24c6dc,
+    #514a9d
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  cursor: pointer;
 }
 .analyse-btn {
   margin: 0.2rem 0.5rem;
   width: 4.5rem;
   height: 2rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   color: white;
   background: #5f2c82; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
     #5f2c82,
     #49a09d
-
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
@@ -144,10 +187,10 @@ cursor: pointer;
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   cursor: pointer;
 }
-.analyse-btn:hover{
-  transform: scale(1.05);
+.analyse-btn:hover {
+  box-shadow: 0 0 20px #a8a7a7;
 }
-.analyse-btn:active{
-  filter: blur(1px);
+.update-btn:hover {
+  box-shadow: 0 0 10px #a8a7a7;
 }
 </style>

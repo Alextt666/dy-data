@@ -1,19 +1,19 @@
 <template>
-  <HelloWorld msg="Welcome to Your Data-Analyzer"/>
-  <UrlInput/>
+  <HelloWorld msg="Welcome to Your Data-Analyzer" />
+  <UrlInput />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import UrlInput from './components/UrlInput.vue';
+import HelloWorld from "./components/HelloWorld.vue";
+import UrlInput from "./components/UrlInput.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HelloWorld,
-    UrlInput
-}
-}
+    UrlInput,
+  },
+};
 </script>
 
 <style>

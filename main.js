@@ -9,11 +9,7 @@ const RESULT_ARR = [];
 
 //\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
 
-// 数据地址
-const URL_List = [
-  "https://v.douyin.com/BPwMmno",
-  "https://www.douyin.com/video/7186494375692602662",
-];
+
 
 // 写入相关
 
@@ -34,12 +30,12 @@ function fetchDyData(url) {
       .then(function (res) {
         const { statistics, author } = res.data;
         const temp = {
-          博主名称: author.nickname,
-          user_id: statistics.aweme_id,
-          点赞数: statistics.digg_count,
-          收藏数: statistics.collect_count,
-          评论数: statistics.comment_count,
-          转发数: statistics.share_count,
+          '博主名称': author.nickname,
+          'user_id': statistics.aweme_id,
+          '点赞数': statistics.digg_count,
+          '收藏数': statistics.collect_count,
+         '评论数': statistics.comment_count,
+          '转发数': statistics.share_count,
         };
         resolve(temp);
       })
@@ -49,7 +45,7 @@ function fetchDyData(url) {
   });
 }
 
-function startWrite() {
+function startWrite(URL_List) {
   // 存入PromiseList
   URL_List.forEach((item) => {
     promiseList.push(fetchDyData(item));
@@ -75,12 +71,14 @@ function createWindow() {
   });
 
   // 等待ipc 通信
-  ipcMain.on("check-data", () => {
-    startWrite();
+  ipcMain.on("check-data", (event,args) => {
+    // 数据地址
+    const URL_List = JSON.parse(args);
+    startWrite(URL_List);
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile("index.html");
+  mainWindow.loadFile("./dy-ui/dist/index.html");
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
