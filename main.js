@@ -6,6 +6,9 @@ const fs = require("fs");
 const json2xls = require("json2xls");
 const promiseList = [];
 const RESULT_ARR = [];
+
+//\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
+
 // 数据地址
 const URL_List = [
   "https://v.douyin.com/BPwMmno",

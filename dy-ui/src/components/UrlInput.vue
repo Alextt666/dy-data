@@ -1,42 +1,153 @@
 <template>
-  <div class="input-top" >
+  <div class="input-top">
     <div class="input-wrapper">
-      <el-input
-        v-model="input"
-        placeholder="Please input the url "
-      />
+      <el-input v-model="input" placeholder="Please input the url " />
     </div>
 
-    <el-button style="width:80px" type="primary" @click="handleAdd">添 加</el-button>
+    <el-button style="width: 80px" type="primary" @click="handleAdd"
+      >添 加</el-button
+    >
   </div>
-  <div>
-    <ul>
-      <li v-for="(item,index) of inputArr" :key="index">{{ item }}</li>
-    </ul>
+  <div class="btn-wrapper">
+    <button class="update-btn">更 新</button>
+    <button class="analyse-btn">分 析</button>
+  </div>
+  <div class="ul-wrapper">
+    <ol>
+      <div v-for="(item, index) of inputArr" :key="index" class="item-wrapper">
+        <li>
+          {{ item }}
+        </li>
+        <div class="close-icon" @click="handleClose(index)">
+          <svg-icon icon-class="close" class-name="icon" />
+        </div>
+      </div>
+    </ol>
   </div>
 </template>
 <script setup>
-import { ref ,reactive} from 'vue';
-const input = ref('');
+import { ElMessage } from "element-plus";
+import { ref, reactive } from "vue";
+const input = ref("");
 const inputArr = reactive([]);
-function handleAdd(){
-    if(input.value){
-        inputArr.push(input.value);
-        input.value = ''
-    }
+// 正则匹配
+function validate(str) {
+  let regRex =
+    /\b(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
+  const res = regRex.test(str);
+  return res;
+}
+// 检查输入
+function checkInput(ipt) {
+  if (validate(ipt)) {
+    inputArr.push(ipt);
+    ElMessage({
+      type: "success",
+      message: "添加成功!",
+    });
+  } else {
+    ElMessage({
+      type: "warning",
+      message: "请输入正确的链接地址!",
+    });
+  }
+}
+// 处理添加按钮
+function handleAdd() {
+  if (input.value) {
+    checkInput(input.value);
+    input.value = "";
+  } else {
+    ElMessage({
+      type: "warning",
+      message: "当前输入为空! ",
+    });
+  }
+}
+// 关闭按钮
+function handleClose(index) {
+  this.inputArr.splice(index, 1);
+  ElMessage({
+    type: "success",
+    message: "已删除此条记录",
+  });
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .input-top {
-  margin: 3rem 0;
+  margin: 3rem 0 1.5rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.input-wrapper{
-    width: 40rem;
-    margin: 0 1.5rem;
+.input-wrapper {
+  width: 40rem;
+  margin: 0 1.5rem;
+}
+.ul-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.item-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+ol {
+  width: 65rem;
+}
+li {
+  height: 2.6rem;
+  line-height: 2.6rem;
+  text-align: left;
+}
+.close-icon {
+  right: 60px;
+}
+.update-btn {
+  margin: 0.2rem 0.5rem;
+  margin: 0.2rem 0.5rem;
+  width: 4.5rem;
+  height: 2rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: #24C6DC;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right,#24C6DC, #514A9D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #24C6DC, #514A9D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+cursor: pointer;
+
+
+}
+.analyse-btn {
+  margin: 0.2rem 0.5rem;
+  width: 4.5rem;
+  height: 2rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: #5f2c82; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #5f2c82,
+    #49a09d
+
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #5f2c82,
+    #49a09d
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  cursor: pointer;
+}
+.analyse-btn:hover{
+  transform: scale(1.05);
+}
+.analyse-btn:active{
+  filter: blur(1px);
 }
 </style>
