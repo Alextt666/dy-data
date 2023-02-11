@@ -10,6 +10,25 @@ const RESULT_ARR = [];
 
 //\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
 
+
+function formatDate(value) {
+  var date = new Date(value*1000);
+  var y = date.getFullYear(),
+    m = date.getMonth() + 1,
+    d = date.getDate(),
+    h = date.getHours(),
+    i = date.getMinutes(),
+    s = date.getSeconds();
+  if (m < 10) { m = '0' + m; }
+  if (d < 10) { d = '0' + d; }
+  if (h < 10) { h = '0' + h; }
+  if (i < 10) { i = '0' + i; }
+  if (s < 10) { s = '0' + s; }
+  var t = y + '-' + m + '-' + d + ' ' + h + ':' + i + ':' + s;
+  return t;
+}
+
+
 // 写入相关
 
 // 写入excel
@@ -27,7 +46,8 @@ function fetchDyData(url) {
       url: `https://api.douyin.wtf/api?url=${url}/&minimal=false`,
     })
       .then(function (res) {
-        const { statistics, author } = res.data;
+        const { statistics, author,create_time } = res.data;
+        const date = formatDate(+create_time);
         const temp = {
           博主名称: author.nickname,
           user_id: statistics.aweme_id,
@@ -35,6 +55,7 @@ function fetchDyData(url) {
           收藏数: statistics.collect_count,
           评论数: statistics.comment_count,
           转发数: statistics.share_count,
+          发布时间: date
         };
         resolve(temp);
       })
