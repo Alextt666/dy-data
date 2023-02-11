@@ -14,7 +14,7 @@ const RESULT_ARR = [];
 // 写入excel
 function writeFile(arr) {
   const xls = json2xls(arr);
-  fs.writeFileSync("C:\\Users\\Administrator\\Desktop\\Data.xlsx", xls, "binary");
+  fs.writeFileSync("Data.xlsx", xls, "binary");
   RESULT_ARR.splice(0, RESULT_ARR.length);
 }
 
@@ -60,7 +60,7 @@ function startWrite(URL_List) {
   }).catch(err=>{
     return new Error(err)
   })
-  return Promise.resolve('success')
+  return 'success'
 }
 
 function createWindow() {

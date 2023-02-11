@@ -15,9 +15,15 @@ window.addEventListener("DOMContentLoaded", () => {
     const args = window.localStorage.getItem("Urls");
     // ipcRenderer.send('check-data',args);
     ipcRenderer.invoke("check-data", args).then((res) => {
-       const result = JSON.parse(res);
-       console.log(result.address);
-       console.log(result.msg);
+      const result = JSON.parse(res);
+      //  console.log(result.address);
+      if (result.msg == "success") {
+        const resDom = document.querySelector("#result");
+        resDom.style.visibility = "visible";
+        setTimeout(() => {
+          resDom.style.visibility = "hidden";
+        }, 3000);
+      }
     });
   });
 });

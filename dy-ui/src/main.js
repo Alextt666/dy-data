@@ -5,6 +5,6 @@ import App from './App.vue';
 import registerSvgIcon from './icons';
 
 const app = createApp(App);
-app.use(ElementPlus)
-app.mount('#app')
+app.use(ElementPlus);
 registerSvgIcon(app)
+app.mount('#app')
