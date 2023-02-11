@@ -19,5 +19,10 @@ module.exports = defineConfig({
       symbolId:'icon-[name]'
     })
     .end()
+    config.plugin('html')
+    .tap(arg=>{
+      arg[0].title = 'QQ偷懒神器';
+      return arg;
+    })
   }
 })

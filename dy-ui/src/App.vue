@@ -1,4 +1,5 @@
 <template>
+  
   <HelloWorld msg="Welcome to Your Data-Analyzer" />
   <UrlInput />
 </template>

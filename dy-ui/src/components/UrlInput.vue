@@ -115,7 +115,7 @@ function handleUpdate() {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .input-top {
-  margin: 3rem 0 1.5rem 0;
+  margin: 1.5rem 0 1.5rem 0;
   display: flex;
   justify-content: center;
   align-items: center;

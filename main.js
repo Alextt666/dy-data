@@ -9,14 +9,12 @@ const RESULT_ARR = [];
 
 //\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
 
-
-
 // 写入相关
 
 // 写入excel
 function writeFile(arr) {
   const xls = json2xls(arr);
-  fs.writeFileSync("data.xlsx", xls, "binary");
+  fs.writeFileSync("C:\\Users\\Administrator\\Desktop\\Data.xlsx", xls, "binary");
   RESULT_ARR.splice(0, RESULT_ARR.length);
 }
 
@@ -30,12 +28,12 @@ function fetchDyData(url) {
       .then(function (res) {
         const { statistics, author } = res.data;
         const temp = {
-          '博主名称': author.nickname,
-          'user_id': statistics.aweme_id,
-          '点赞数': statistics.digg_count,
-          '收藏数': statistics.collect_count,
-         '评论数': statistics.comment_count,
-          '转发数': statistics.share_count,
+          博主名称: author.nickname,
+          user_id: statistics.aweme_id,
+          点赞数: statistics.digg_count,
+          收藏数: statistics.collect_count,
+          评论数: statistics.comment_count,
+          转发数: statistics.share_count,
         };
         resolve(temp);
       })
@@ -46,6 +44,9 @@ function fetchDyData(url) {
 }
 
 function startWrite(URL_List) {
+  if (promiseList.length != 0) {
+    promiseList.splice(0, promiseList.length);
+  }
   // 存入PromiseList
   URL_List.forEach((item) => {
     promiseList.push(fetchDyData(item));
@@ -56,8 +57,10 @@ function startWrite(URL_List) {
       RESULT_ARR.push(result.value);
     });
     writeFile(RESULT_ARR);
-    console.log(RESULT_ARR, "done");
-  });
+  }).catch(err=>{
+    return new Error(err)
+  })
+  return Promise.resolve('success')
 }
 
 function createWindow() {
@@ -71,10 +74,12 @@ function createWindow() {
   });
 
   // 等待ipc 通信
-  ipcMain.on("check-data", (event,args) => {
+  ipcMain.handle("check-data", async (event, args) => {
     // 数据地址
-    const URL_List = JSON.parse(args);
-    startWrite(URL_List);
+    let URL_List = JSON.parse(args);
+    const res = await startWrite(URL_List);
+    const temp = JSON.stringify({address:__dirname + '\\Data.xlsx', msg:res});
+    return temp;
   });
 
   // and load the index.html of the app.
