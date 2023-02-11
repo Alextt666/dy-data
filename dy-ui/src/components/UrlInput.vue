@@ -81,6 +81,9 @@ function handleClose(index) {
 }
 // 是否更新列表
 function isUpdated() {
+  if(!localArr){
+    return true;
+  }
   if (inputArr.length != localArr.length) {
     return true;
   }

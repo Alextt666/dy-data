@@ -3,6 +3,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const axios = require("axios");
 const fs = require("fs");
+const os = require('os');
 const json2xls = require("json2xls");
 const promiseList = [];
 const RESULT_ARR = [];
@@ -14,7 +15,7 @@ const RESULT_ARR = [];
 // 写入excel
 function writeFile(arr) {
   const xls = json2xls(arr);
-  fs.writeFileSync("Data.xlsx", xls, "binary");
+  fs.writeFileSync(os.homedir()+"\\Downloads\\Data.xlsx", xls, "binary");
   RESULT_ARR.splice(0, RESULT_ARR.length);
 }
 
@@ -66,13 +67,13 @@ function startWrite(URL_List) {
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
+    // fullscreen:true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
   });
-
   // 等待ipc 通信
   ipcMain.handle("check-data", async (event, args) => {
     // 数据地址
