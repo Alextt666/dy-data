@@ -18,7 +18,6 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes, // `routes: routes` 的缩写
   });
-router
 export default router
 
 
