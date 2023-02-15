@@ -1,10 +1,11 @@
 <template>
-  <router-view ></router-view>
+  <div>dashbord</div>
+  <router-link to="analyze">数据分析</router-link>
 </template>
 
 <script>
 export default {
-  name: "App",
+  name: "Dash-bord",
   components: {},
 };
 </script>
