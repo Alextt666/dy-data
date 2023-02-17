@@ -7,7 +7,7 @@ const os = require('os');
 const json2xls = require("json2xls");
 const promiseList = [];
 const RESULT_ARR = [];
-Menu.setApplicationMenu(null);
+// Menu.setApplicationMenu(null);
 //\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
 
 
@@ -60,6 +60,7 @@ function fetchDyData(url) {
         resolve(temp);
       })
       .catch((err) => {
+        console.log(err)
         rejects(new Error(err));
       });
   });
@@ -93,6 +94,8 @@ function createWindow() {
     // fullscreen:true,
     icon:path.join(__dirname,'./dy-ui/dist/favicon.ico'),
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       preload: path.join(__dirname, "preload.js"),
     },
   });
