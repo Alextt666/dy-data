@@ -23,7 +23,7 @@ module.exports = defineConfig({
     .end()
     config.plugin('html')
     .tap(arg=>{
-      arg[0].title = 'QQ偷懒神器';
+      arg[0].title = 'Lazy-Zone';
       return arg;
     })
   }

@@ -1,12 +1,12 @@
 import DataAnalyze from "@comp/DataStructer";
-import Dashbord from "@comp/Dashbord.vue";
+import Main from "@comp/Main.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
 // 我们后面再讨论嵌套路由。
 const routes = [
-    { path: "/", component: Dashbord },
+    { path: "/", component: Main },
     { path: "/analyze", component: DataAnalyze },
 ];
 
