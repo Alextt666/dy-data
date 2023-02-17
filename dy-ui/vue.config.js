@@ -7,6 +7,7 @@ function resolve(dir) {
 module.exports = defineConfig({
   transpileDependencies: true,
   lintOnSave:false,
+  runtimeCompiler:true,
   chainWebpack:(config)=>{
     config.resolve.alias.set('@',resolve('src'))
     config.resolve.alias.set('@comp',resolve('src/components'))

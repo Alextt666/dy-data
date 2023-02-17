@@ -4,10 +4,9 @@
       <div class="dashbord-chat">
         <div class="dashbord-chat__title">Welcome to Lazy-Zone!</div>
         <div class="dashbord-chat__content">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta
-          recusandae nulla nam minima, aliquam distinctio voluptatem asperiores
-          labore numquam officiis nobis iste nostrum ex voluptates unde iure,
-          reiciendis, doloremque odio! </p>
+          <vue-typed :strings="myStrings">
+            <h1><span class="typing"></span></h1>
+          </vue-typed>
         </div>
       </div>
       <DashWrapper />
@@ -18,15 +17,21 @@
 <script>
 import DashWrapper from "./DashWrapper.vue";
 import AuthorInfo from "./AuthorInfo.vue";
+import { VueTyped } from "vue3-typed.js";
+
 export default {
   name: "Dash-bord",
   components: {
     DashWrapper,
     AuthorInfo,
+    VueTyped,
   },
   data() {
     return {
       bordShow: false,
+      myStrings: [
+        "Hi there! This is a single application made for my lover QQ. Hope you can enjoy this app, and reduce the burden of work.All features are continuously updated.If there is a bug or a feature you need, please let me know! Hava fun!",
+      ],
     };
   },
   async beforeMount() {

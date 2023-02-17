@@ -15,7 +15,8 @@
     "sass-loader": "^13.2.0",
     "svg-sprite-loader": "^6.0.11",
     "vue": "^3.2.13",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue3-typed.js": "^1.0.0-pre"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
