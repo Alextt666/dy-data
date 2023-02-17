@@ -1,5 +1,10 @@
 <template>
-  <router-view></router-view>
+     <router-view v-slot="{ Component }">
+          <keep-alive >
+              <component  :is="Component"/>
+          </keep-alive>
+     </router-view>
+
 </template>
 
 <script>
@@ -25,5 +30,4 @@ export default {
   background: linear-gradient(#81b29a, #f2cc8f);
   padding-top: 60px;
 }
-
 </style>

@@ -10,6 +10,9 @@ import Lottie from "@comp/Lottie";
 import DashBord from "@comp/DashBord";
 export default {
   name: "Dash-bord",
+  activated(){
+    console.log('actived')
+  },
   data() {
     return {
       animateShow: true,
