@@ -1,19 +1,29 @@
 <template>
-  <div class="dashbord-wrapper">
+  <div class="dashbord-wrapper flex-ar">
     <div class="dashbord-item flex-center">
       <router-link to="analyze">Analyze</router-link>
+    </div>
+    <div class="dashbord-item flex-center">
+      <div @click="handleAutoStart">AutoStart</div>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "Dash-wrapper",
+  methods:{
+    handleAutoStart(){
+      window.open('weixin://');
+      window.open('lark://');
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
 .dashbord-wrapper {
+  width: 30vw;
   position: absolute;
-  bottom: 15rem;
+  bottom: 12rem;
   left: 10rem;
   .dashbord-item {
     width: 8rem;

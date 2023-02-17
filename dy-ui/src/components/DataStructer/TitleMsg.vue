@@ -13,6 +13,7 @@ import { defineProps } from "vue";
 defineProps({
   msg: String,
 });
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
