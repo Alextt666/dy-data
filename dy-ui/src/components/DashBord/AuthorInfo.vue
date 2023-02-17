@@ -1,5 +1,5 @@
 <template>
-  <div class="author-info">CopyRight@Alexzhang</div>
+  <div class="author-info">CopyRight@Alexzhang&nbsp;-&nbsp;2023</div>
 </template>
 <script>
 export default {
@@ -10,7 +10,7 @@ export default {
 .author-info {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  right: 8rem;
   font-size: 1rem;
   font-weight: normal;
 }

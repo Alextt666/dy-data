@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain,Menu } = require("electron");
 const path = require("path");
 const axios = require("axios");
 const fs = require("fs");
@@ -7,7 +7,7 @@ const os = require('os');
 const json2xls = require("json2xls");
 const promiseList = [];
 const RESULT_ARR = [];
-
+Menu.setApplicationMenu(null);
 //\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
 
 
@@ -91,6 +91,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     // fullscreen:true,
+    icon:path.join(__dirname,'./dy-ui/dist/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },

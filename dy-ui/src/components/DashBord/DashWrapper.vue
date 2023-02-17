@@ -13,8 +13,9 @@ export default {
   name: "Dash-wrapper",
   methods:{
     handleAutoStart(){
-      window.open('weixin://');
-      window.open('lark://');
+      window.location.href = 'weixin://';
+      window.location.href = 'lark://';
+      // window.open('lark://');
     }
   }
 };

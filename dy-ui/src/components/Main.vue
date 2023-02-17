@@ -1,8 +1,10 @@
 <template>
   <transition name="lot" mode="">
-    <Lottie animateType="cat" propsId="lottie1" v-if="animateShow" />
+    <Lottie animateType="cat" propsId="lottie1" v-show="animateShow" />
   </transition>
-  <DashBord @bord-ready="handleBordReady" />
+  <transition name="" mode="">
+    <DashBord @bord-ready="handleBordReady" />
+  </transition>
 </template>
 
 <script>
@@ -39,6 +41,14 @@ export default {
 
 .lot-enter-from,
 .lot-leave-to {
+  opacity: 0;
+}
+
+.bord-enter-active {
+  transition: opacity 1.2s ease;
+}
+
+.bord-enter-from {
   opacity: 0;
 }
 </style>

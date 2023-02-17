@@ -1,37 +1,28 @@
 <template>
-  <transition name="bord" mode="">
-    <div class="dashbord-page" v-if="bordShow">
-      <div class="dashbord-chat">
-        <div class="dashbord-chat__title">Welcome to Lazy-Zone!</div>
-        <div class="dashbord-chat__content">
-          <vue-typed :strings="myStrings">
-            <h1><span class="typing"></span></h1>
-          </vue-typed>
-        </div>
-      </div>
-      <DashWrapper />
-      <AuthorInfo />
-    </div>
-  </transition>
+  <div class="dashbord-page" v-show="bordShow">
+    <transition name="chat" mode="">
+      <DashChat v-if="asyncShow" />
+    </transition>
+    <DashWrapper />
+    <AuthorInfo />
+  </div>
 </template>
 <script>
 import DashWrapper from "./DashWrapper.vue";
 import AuthorInfo from "./AuthorInfo.vue";
-import { VueTyped } from "vue3-typed.js";
+import DashChat from "./DashChat.vue";
 
 export default {
   name: "Dash-bord",
   components: {
     DashWrapper,
     AuthorInfo,
-    VueTyped,
+    DashChat,
   },
   data() {
     return {
       bordShow: false,
-      myStrings: [
-        "Hi there! This is a single application made for my lover QQ. Hope you can enjoy this app, and reduce the burden of work.All features are continuously updated.If there is a bug or a feature you need, please let me know! Hava fun!",
-      ],
+      asyncShow: false,
     };
   },
   async beforeMount() {
@@ -43,26 +34,38 @@ export default {
         }, 1500);
       });
     }
-    await getPromise();
-    this.bordShow = true;
+    const res = await getPromise();
+    if (res === "success") {
+      this.bordShow = true;
+      setTimeout(() => {
+        this.asyncShow = true;
+      }, 1000);
+    }
     this.$emit("bord-ready");
   },
   mounted() {},
 };
 </script>
 <style lang="scss">
-.bord-enter-active {
-  transition: opacity 1.2s ease;
+.chat-enter-active,
+.chat-leave-active {
+  transition: opacity 0.8s ease;
 }
 
-.bord-enter-from {
+.chat-enter-from,
+.chat-leave-to {
   opacity: 0;
 }
 
+.dashbord-page {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 .dashbord-chat {
   width: 35vw;
   position: absolute;
-  right: 6rem;
+  right: 3rem;
   text-align: center;
   display: flex;
   flex-direction: column;
