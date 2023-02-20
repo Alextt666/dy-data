@@ -10,11 +10,6 @@ const RESULT_ARR = [];
 // Menu.setApplicationMenu(null);
 //\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
 
-
-
-
-
-
 // 写入相关
 
 // 写入excel
@@ -32,7 +27,8 @@ async function fetchDyData(url) {
     setTimeout: 100000,
     headers: {
       Connection: "keep-alive",
-      UserAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+      UserAgent:
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
     },
     responseType: "json",
     transfromResponse: [
@@ -43,20 +39,6 @@ async function fetchDyData(url) {
   })
     .then(function (res) {
       console.log(res, "res");
-
-      // const { statistics, author, create_time } = res.data;
-      // const date = formatDate(+create_time);
-      // console.log(res,'statistic')
-      // const temp = {
-      //   博主名称: author.nickname,
-      //   user_id: statistics.aweme_id,
-      //   点赞数: statistics.digg_count,
-      //   收藏数: statistics.collect_count,
-      //   评论数: statistics.comment_count,
-      //   转发数: statistics.share_count,
-      //   发布时间: date,
-      // };
-      // resolve(temp);
     })
     .catch((err) => {
       console.log(err);
@@ -107,8 +89,8 @@ function createWindow() {
   ipcMain.handle("check-data", async (event, args) => {
     writeFile(args);
     return {
-      status:'success'
-    }
+      status: "success",
+    };
   });
 
   // and load the index.html of the app.

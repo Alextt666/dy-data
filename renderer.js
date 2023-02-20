@@ -93,7 +93,6 @@ window.onload = function () {
         setTimeout(()=>{
           successBtn.style.visibility = 'hidden';
         },6000)
-
       }
     });
   }
@@ -108,7 +107,6 @@ window.onload = function () {
       });
       const values = await Promise.allSettled(argsList);
       values.forEach((item) => {
-        console.log(item.value, "valuesItem");
         if(item.status == 'fulfilled'){
           formateData(item.value);
         }else{
