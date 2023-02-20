@@ -1,9 +1,9 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain,Menu } = require("electron");
+const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 const path = require("path");
 const axios = require("axios");
 const fs = require("fs");
-const os = require('os');
+const os = require("os");
 const json2xls = require("json2xls");
 const promiseList = [];
 const RESULT_ARR = [];
@@ -11,22 +11,8 @@ const RESULT_ARR = [];
 //\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|] url正则
 
 
-function formatDate(value) {
-  var date = new Date(value*1000);
-  var y = date.getFullYear(),
-    m = date.getMonth() + 1,
-    d = date.getDate(),
-    h = date.getHours(),
-    i = date.getMinutes(),
-    s = date.getSeconds();
-  if (m < 10) { m = '0' + m; }
-  if (d < 10) { d = '0' + d; }
-  if (h < 10) { h = '0' + h; }
-  if (i < 10) { i = '0' + i; }
-  if (s < 10) { s = '0' + s; }
-  var t = y + '-' + m + '-' + d + ' ' + h + ':' + i + ':' + s;
-  return t;
-}
+
+
 
 
 // 写入相关
@@ -34,56 +20,74 @@ function formatDate(value) {
 // 写入excel
 function writeFile(arr) {
   const xls = json2xls(arr);
-  fs.writeFileSync(os.homedir()+"\\Downloads\\Data.xlsx", xls, "binary");
+  fs.writeFileSync(os.homedir() + "\\Downloads\\Data.xlsx", xls, "binary");
   RESULT_ARR.splice(0, RESULT_ARR.length);
 }
 
 // 拉取json数据源
-function fetchDyData(url) {
-  return new Promise((resolve, rejects) => {
-    axios({
-      method: "get",
-      url: `https://api.douyin.wtf/api?url=${url}/&minimal=false`,
+async function fetchDyData(url) {
+  axios({
+    method: "get",
+    url: `https://api.douyin.wtf/api?url=${url}/&minimal=false`,
+    setTimeout: 100000,
+    headers: {
+      Connection: "keep-alive",
+      UserAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+    },
+    responseType: "json",
+    transfromResponse: [
+      function (data) {
+        return data;
+      },
+    ],
+  })
+    .then(function (res) {
+      console.log(res, "res");
+
+      // const { statistics, author, create_time } = res.data;
+      // const date = formatDate(+create_time);
+      // console.log(res,'statistic')
+      // const temp = {
+      //   博主名称: author.nickname,
+      //   user_id: statistics.aweme_id,
+      //   点赞数: statistics.digg_count,
+      //   收藏数: statistics.collect_count,
+      //   评论数: statistics.comment_count,
+      //   转发数: statistics.share_count,
+      //   发布时间: date,
+      // };
+      // resolve(temp);
     })
-      .then(function (res) {
-        const { statistics, author,create_time } = res.data;
-        const date = formatDate(+create_time);
-        const temp = {
-          博主名称: author.nickname,
-          user_id: statistics.aweme_id,
-          点赞数: statistics.digg_count,
-          收藏数: statistics.collect_count,
-          评论数: statistics.comment_count,
-          转发数: statistics.share_count,
-          发布时间: date
-        };
-        resolve(temp);
-      })
-      .catch((err) => {
-        console.log(err)
-        rejects(new Error(err));
-      });
-  });
+    .catch((err) => {
+      console.log(err);
+      rejects(new Error(err));
+    });
 }
 
 function startWrite(URL_List) {
-  if (promiseList.length != 0) {
-    promiseList.splice(0, promiseList.length);
-  }
-  // 存入PromiseList
-  URL_List.forEach((item) => {
-    promiseList.push(fetchDyData(item));
-  });
-  // 全部发出等待结果后写入
-  Promise.allSettled(promiseList).then((res) => {
-    res.forEach((result) => {
-      RESULT_ARR.push(result.value);
+  try {
+    if (promiseList.length != 0) {
+      promiseList.splice(0, promiseList.length);
+    }
+    // 存入PromiseList
+    URL_List.forEach((item) => {
+      promiseList.push(fetchDyData(item));
     });
-    writeFile(RESULT_ARR);
-  }).catch(err=>{
-    return new Error(err)
-  })
-  return 'success'
+    // 全部发出等待结果后写入
+    Promise.allSettled(promiseList)
+      .then((res) => {
+        res.forEach((result) => {
+          RESULT_ARR.push(result.value);
+        });
+        writeFile(RESULT_ARR);
+      })
+      .catch((err) => {
+        return new Error(err);
+      });
+    return "success";
+  } catch {
+    return new Error("some wrong");
+  }
 }
 
 function createWindow() {
@@ -92,7 +96,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     // fullscreen:true,
-    icon:path.join(__dirname,'./dy-ui/dist/favicon.ico'),
+    icon: path.join(__dirname, "./dy-ui/dist/favicon.ico"),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -101,11 +105,10 @@ function createWindow() {
   });
   // 等待ipc 通信
   ipcMain.handle("check-data", async (event, args) => {
-    // 数据地址
-    let URL_List = JSON.parse(args);
-    const res = await startWrite(URL_List);
-    const temp = JSON.stringify({address:__dirname + '\\Data.xlsx', msg:res});
-    return temp;
+    writeFile(args);
+    return {
+      status:'success'
+    }
   });
 
   // and load the index.html of the app.
