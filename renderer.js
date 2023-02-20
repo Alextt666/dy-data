@@ -83,16 +83,12 @@ window.onload = function () {
   }
 
   // 唤醒主程序
-  function invokeFun() {
+  function invokeFun(successBtn) {
     ipcRenderer.invoke("check-data", dataArrs).then((res) => {
       if (res.status == "success") {
-        const successBtn = document.querySelector('#result');
         successBtn.style.visibility = 'visible';
         // reset dataArrs
         dataArrs.splice(0, dataArrs.length);
-        setTimeout(()=>{
-          successBtn.style.visibility = 'hidden';
-        },6000)
       }
     });
   }
@@ -100,6 +96,8 @@ window.onload = function () {
     // 取出缓存链接
     let args = window.localStorage.getItem("Urls");
     args = JSON.parse(args);
+    const successBtn = document.querySelector('#result');
+    successBtn.style.visibility = 'hidden';
     try {
       const argsList = args.map((item) => {
         const url = `https://api.douyin.wtf/api?url=${item}/&minimal=false`;
@@ -113,7 +111,7 @@ window.onload = function () {
           console.log(item + 'reject');
         }
       });
-      invokeFun();
+      invokeFun(successBtn);
     } catch (error) {
       alert(error,'111')
     }
